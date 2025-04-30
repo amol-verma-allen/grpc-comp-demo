@@ -1,0 +1,22 @@
+# Git files
+.git
+.gitignore
+
+# Build artifacts
+bin/
+grpcreadoutput.txt
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+README.md
+*.log 

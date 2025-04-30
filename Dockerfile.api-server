@@ -1,0 +1,27 @@
+FROM golang:1.23-alpine AS builder
+
+WORKDIR /app
+
+# Copy go mod and sum files
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the API server
+RUN go build -o /app/bin/api-server cmd/api-server/main.go
+
+# Use a smaller image for the final build
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/bin/api-server /app/api-server
+
+# Expose the API server port
+EXPOSE 8082
+
+# Run the API server
+CMD ["/app/api-server"] 

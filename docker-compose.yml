@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  mock-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.mock-server
+    ports:
+      - "50051:50051"
+    volumes:
+      - ./taxonomy_raw.json:/app/taxonomy_raw.json
+    networks:
+      - taxonomy-net
+    hostname: mock-server
+
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.api-server
+    ports:
+      - "8082:8082"
+    environment:
+      - TAXONOMY_SERVICE_ADDR=mock-server:50051
+    depends_on:
+      - mock-server
+    networks:
+      - taxonomy-net
+
+networks:
+  taxonomy-net:
+    driver: bridge

@@ -1,0 +1,60 @@
+# Build stage
+FROM golang:1.23-alpine AS builder
+
+WORKDIR /app
+
+# Copy go mod and sum files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build both API server and mock server
+RUN mkdir -p /app/bin && \
+    go build -o /app/bin/api-server cmd/api-server/main.go && \
+    go build -o /app/bin/mock-server cmd/mock-taxonomy-service/main.go
+
+# Final stage
+FROM alpine:3.19
+
+WORKDIR /app
+
+# Install bash and curl for testing
+RUN apk add --no-cache bash curl
+
+# Copy the binaries from builder
+COPY --from=builder /app/bin/api-server /app/bin/
+COPY --from=builder /app/bin/mock-server /app/bin/
+
+# Copy run script
+COPY run.sh /app/
+
+# Copy taxonomy data - must exist in the build context
+COPY taxonomy_raw.json /app/
+
+# Check for file presence and size
+RUN ls -la /app && \
+    if [ -f "/app/taxonomy_raw.json" ]; then \
+      echo "Taxonomy file exists with size: $(du -h /app/taxonomy_raw.json)"; \
+    else \
+      echo "TAXONOMY FILE MISSING!"; \
+      exit 1; \
+    fi
+
+# Environment variables for testing
+ENV API_PORT=8082
+ENV MOCK_PORT=8083
+ENV MOCK_TAXONOMY_ID=1701181887VZ
+ENV LOG_LEVEL=debug
+
+# Make scripts executable
+RUN chmod +x /app/run.sh
+
+# Expose both ports
+EXPOSE 8082 8083
+
+# Use run.sh as entry point
+CMD ["/app/run.sh"] 
