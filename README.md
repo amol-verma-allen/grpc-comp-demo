@@ -1,6 +1,6 @@
 Delete /bin folder before replicating
 
-Steps to Replicate - 
+Steps to Replicate in Lima - 
 
 1. Run these commands to build binary for services -
 
