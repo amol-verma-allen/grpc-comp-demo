@@ -5,9 +5,12 @@ Steps to Replicate in Lima -
 1. Run these commands to build binary for services -
 
    chmod +x run.sh
+
+After that run this command - 
+
    ./run/sh
 
-2. Open Two terminals -
+3. Open Two terminals -
 
    First run mock-server service in one terminal -
 
@@ -17,7 +20,7 @@ Steps to Replicate in Lima -
 
    keploy record -c "./bin/api-server"
 
-3. Open third terminal and perform this curl command -
+4. Open third terminal and perform this curl command -
 
    curl http://localhost:8082/api/taxonomy
 
