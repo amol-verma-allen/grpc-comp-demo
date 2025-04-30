@@ -6,9 +6,9 @@ Steps to Replicate in Lima -
 
    chmod +x run.sh
 
-After that run this command - 
-
-   ./run/sh
+   After that run this command - 
+   
+      ./run/sh
 
 3. Open Two terminals -
 
