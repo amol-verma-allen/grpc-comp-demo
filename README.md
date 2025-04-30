@@ -8,7 +8,7 @@ Steps to Replicate in Lima -
 
    After that run this command - 
    
-      ./run/sh
+      ./run.sh
 
 3. Open Two terminals -
 
