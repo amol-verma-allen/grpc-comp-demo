@@ -18,7 +18,7 @@ import (
 const (
 	defaultTaxonomyID = "1701181887VZ"
 	// Use the local mock service instead of the remote one
-	taxonomyServiceAddr = "localhost:8083"
+	taxonomyServiceAddr = "taxonomy-service.taxonomy.allen-stage.in:80"
 	apiPort             = "8082"
 )
 
