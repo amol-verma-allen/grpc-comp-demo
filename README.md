@@ -1,28 +1,12 @@
-Delete /bin folder before replicating
+Delete the bin folder then follow these steps - 
 
-Steps to Replicate in Lima - 
+docker build -t api-server .
 
-1. Run these commands to build binary for services -
+keploy test -c "docker run --name api-server --network keploy-network \
+  -p 8082:8082 -e ENV=stage \
+  -v $(pwd)/config.yaml:/app/config.yaml \
+  -v $(pwd)/credentials:/app/credentials \
+  --rm api-server"
 
-   chmod +x run.sh
-
-   After that run this command - 
-   
-      ./run.sh
-
-3. Open Two terminals -
-
-   First run mock-server service in one terminal -
-
-   ./bin/mock-server
-
-   Then run api-server service in another with keploy
-
-   keploy record -c "./bin/api-server"
-
-4. Open third terminal and perform this curl command -
-
-   curl http://localhost:8082/api/taxonomy
-
-    
+Try for multiple times, out.txt has the POC
     
